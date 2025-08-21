@@ -402,7 +402,6 @@
                             type: 'availability',
                             type: 'checkbox', 
                             options: [
-                                { id: 'in_stock', name: 'In Stock' },
                                 { id: 'out_of_stock', name: 'Out of Stock' },
                                 { id: 'exclude_out_of_stock', name: 'Exclude Out of Stock' },
                             ],
