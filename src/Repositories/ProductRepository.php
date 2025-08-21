@@ -95,6 +95,19 @@ class ProductRepository extends BaseProductRepository{
             }
 
 
+            if (!empty($params['popular'])) {
+                $qb->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+                ->leftJoin('orders', function ($join) {
+                    $join->on('order_items.order_id', '=', 'orders.id')
+                            ->where('orders.status', 'completed'); 
+                })
+                ->groupBy('products.id')
+                ->orderByRaw('COUNT(order_items.id) DESC') 
+                ->limit(5); 
+            }
+
+
+
             if (! empty($params['discount'])) {
                 $qb->whereRaw('((price - special_price) / price) * 100 >= ?', [$params['discount']]);
             }
