@@ -69,17 +69,23 @@ class ProductRepository extends BaseProductRepository{
             }
 
 
+            
             if (isset($params['availability'])) {
-                if ($params['availability'] == 1) {
-                    $qb->whereHas('inventories', function($q) {
-                        $q->where('qty', '>', 0);
-                    });
-                } else {
-                    $qb->whereHas('inventories', function($q) {
+                if ($params['availability'] === 'out_of_stock') {
+                    
+                    $qb->whereHas('inventories', function ($q) {
                         $q->where('qty', '<=', 0);
                     });
                 }
+
+                if ($params['availability'] === 'exclude_out_of_stock') {
+                    
+                    $qb->whereHas('inventories', function ($q) {
+                        $q->where('qty', '>=', 0);
+                    });
+                }
             }
+
 
             // Offers Filter
             if (! empty($params['offers'])) {
